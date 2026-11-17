@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 project(VoiceSampler VERSION 1.0.0)
 
-# Put the JUCE folder next to this file (git clone https://github.com/juce-framework/JUCE)
-add_subdirectory(JUCE)
+option(VS_COPY "Copy plugin to the system VST3 folder after build" ON)
+
+include(FetchContent)
+FetchContent_Declare(JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG 8.0.6
+    GIT_SHALLOW TRUE)
+FetchContent_MakeAvailable(JUCE)
 
 juce_add_plugin(VoiceSampler
     COMPANY_NAME "MyPlugins"
@@ -12,7 +18,7 @@ juce_add_plugin(VoiceSampler
     PLUGIN_MANUFACTURER_CODE Mypl
     PLUGIN_CODE Vsmp
     FORMATS VST3 Standalone
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    COPY_PLUGIN_AFTER_BUILD ${VS_COPY}
     PRODUCT_NAME "Voice Sampler")
 
 target_sources(VoiceSampler PRIVATE Source/VoiceSampler.cpp)
